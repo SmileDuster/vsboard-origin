@@ -2,8 +2,56 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper>
-    <insert id="">
+<mapper namespace="com.smileduster.vsboard.service.data.BattleMapper">
+<!--    &lt;!&ndash;insert 操作&ndash;&gt;-->
+<!--    <insert id="insertBattle">-->
+<!--        insert into vs_battle (battle_uuid, battle_name, battle_note, battle_status, battle_create_time, user_id,-->
+<!--                               group_id)-->
+<!--        values (#{battleUUID}, #{battleName}, #{battleNote}, #{battleStatus}, current_timestamp, #{userId}, #{groupId});-->
+<!--    </insert>-->
 
-    </insert>
+<!--    &lt;!&ndash;delete 操作&ndash;&gt;-->
+<!--    <delete id="deleteBattleById">-->
+<!--        delete from vs_battle-->
+<!--        where battle_id = #{battleId};-->
+<!--    </delete>-->
+
+<!--    &lt;!&ndash;update 操作&ndash;&gt;-->
+<!--    <update id="updateBattleInfo">-->
+<!--        update vs_battle-->
+<!--        set battle_name = #{battleName},-->
+<!--            battle_note = #{battleNote},-->
+<!--            battle_status = #{battleStatus}-->
+<!--        where battle_id = #{battleId};-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash;select 操作&ndash;&gt;-->
+<!--    <select id="selectBattle">-->
+<!--        select battle_id            battleId,-->
+<!--               battle_uuid          battleUUID,-->
+<!--               battle_name          battleName,-->
+<!--               battle_status        battleStatus,-->
+<!--               battle_create_time   battleCreateTime,-->
+<!--               user_id              userId,-->
+<!--               group_id             groupId-->
+<!--        from vs_battle-->
+<!--        limit #{skip}, #{size};-->
+<!--    </select>-->
+<!--    <select id="selectBattleById">-->
+<!--        select battle_id            battleId,-->
+<!--               battle_uuid          battleUUID,-->
+<!--               battle_name          battleName,-->
+<!--               battle_note          battleNote,-->
+<!--               battle_status        battleStatus,-->
+<!--               battle_create_time   battleCreateTime,-->
+<!--               user_id              userId,-->
+<!--               group_id             groupId-->
+<!--        from vs_battle-->
+<!--        where battle_id = #{battleId};-->
+<!--    </select>-->
+
 </mapper>
+
+<!--
+
+-->

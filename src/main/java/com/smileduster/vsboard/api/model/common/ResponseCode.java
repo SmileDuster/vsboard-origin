@@ -7,9 +7,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum ResponseCode {
 
-    success("0", "ok"),
-    Insert
-    ;
+    success("0", "done"),
+    loginFail("f1000", "login failed"),
+
+
+    unknown("e0000", "unknown error occurred"),
+    comingSoon("f0000", "coming soon");
 
     private String code;
 

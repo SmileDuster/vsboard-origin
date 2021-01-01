@@ -2,6 +2,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper>
+<mapper namespace="com.smileduster.vsboard.service.data.GroupMapper">
+
+    <!--insert 操作-->
+    <!--update 操作-->
+    <!--delete 操作-->
+    <!--select 操作-->
 
 </mapper>
+
+<!--
+
+-->
