@@ -7,9 +7,9 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class BattleMemberDTO {
 
-    private String battleUUID;
-
     private int groupMemberNumber;
+
+    private String groupMemberName;
 
     private int battleMemberScore;
 

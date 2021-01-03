@@ -16,7 +16,7 @@ public class VsboardControllerAdvice {
     public Response<?> handleGlobal(Exception e) {
         log.error(e.getMessage());
         e.printStackTrace();
-        return Response.create(ResponseCode.unknown, "未知错误");
+        return Response.create(ResponseCode.unknownError, "未知错误");
     }
 
 }

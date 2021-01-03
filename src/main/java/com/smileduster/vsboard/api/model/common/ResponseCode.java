@@ -7,12 +7,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum ResponseCode {
 
-    success("0", "done"),
-    loginFail("f1000", "login failed"),
+    success("0", "Done."),
+    loginFail("f1000", "Login failed."),
+
+    illegalGroup("f2001", "Illegal group provided."),
+    illegalBattle("f2002", "Illegal battle provided."),
+
+    unknownTarget("f3000", "Unknown target."),
 
 
-    unknown("e0000", "unknown error occurred"),
-    comingSoon("f0000", "coming soon");
+    unknownError("e0000", "Unknown error occurred."),
+    comingSoon("f0000", "Coming soon.");
 
     private String code;
 

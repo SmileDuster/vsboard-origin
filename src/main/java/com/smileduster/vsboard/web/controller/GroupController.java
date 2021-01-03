@@ -27,22 +27,22 @@ public class GroupController {
         dto.setGroupName(form.getGroupName());
         dto.setGroupNote(form.getGroupNote());
         dto.setGroupInfo(form.getGroupInfo());
-        return Response.create(groupService.createGroup(dto, userId()));
+        return groupService.createGroup(dto, userId());
     }
 
     @PostMapping("/delete/{groupUUID}")
     public Response<?> deleteGroup(@PathVariable String groupUUID) {
-        return Response.create(groupService.deleteGroup(groupUUID, userId()));
+        return groupService.deleteGroup(groupUUID, userId());
     }
 
     @PostMapping("/{groupUUID}")
     public Response<GroupDTO> getGroupDetail(@PathVariable String groupUUID) {
-        return Response.create(groupService.getGroup(groupUUID, userId()));
+        return groupService.getGroup(groupUUID, userId());
     }
 
     @PostMapping("/list")
     public Response<List<GroupDTO>> getOwnedGroupList(int page, int size) {
-        return Response.create(groupService.getGroups(page, size, userId()));
+        return groupService.getGroups(page, size, userId());
     }
 
     @PostMapping("/member/join")
@@ -51,7 +51,7 @@ public class GroupController {
         dto.setMemberUUID(form.getMemberUUID());
         dto.setGroupUUID(form.getGroupUUID());
         dto.setGroupMemberName(form.getGroupMemberName());
-        return Response.create(groupService.joinGroup(dto, userId()));
+        return groupService.joinGroup(dto, userId());
     }
 
     @GetMapping("/member/{groupUUID}/{groupMemberNumber}")
@@ -60,7 +60,7 @@ public class GroupController {
             @PathVariable String groupMemberNumber
     ) {
         int number = Integer.parseInt(groupMemberNumber);
-        return Response.create(groupService.getGroupMember(groupUUID, number, userId()));
+        return groupService.getGroupMember(groupUUID, number, userId());
     }
 
     private int userId() {

@@ -7,7 +7,7 @@ import com.smileduster.vsboard.web.form.LoginForm;
 import com.smileduster.vsboard.web.form.RegisterForm;
 import com.smileduster.vsboard.web.form.UpdatePwdForm;
 import com.smileduster.vsboard.api.service.IAuthService;
-import com.smileduster.vsboard.api.utils.RandomUtil;
+import com.smileduster.vsboard.api.tools.DefaultGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -47,19 +47,19 @@ public class AuthController {
         UserDTO dto = new UserDTO();
         dto.setUserName(form.getUserName());
         dto.setUserEmail(form.getUserEmail());
-        ByteSource salt = RandomUtil.getSalt();
+        ByteSource salt = DefaultGenerator.getSalt();
         String hashedPwd = new Sha256Hash(form.getUserPwd(), salt, 1024)
                 .toBase64();
         dto.setUserPwd(hashedPwd);
         dto.setUserPwdSalt(salt.getBytes());
 //        log.error(String.valueOf(salt.getBytes().length));
         dto.setUserLastIP("0:0:0:0");
-        return Response.create(authService.createUser(dto));
+        return authService.createUser(dto);
     }
 
     @PostMapping("/updatePwd")
     public Response<?> updatePwd(@RequestBody UpdatePwdForm form){
-        return Response.create(ResponseCode.comingSoon, "暂不支持修改密码");
+        return Response.todo();
     }
 
 }

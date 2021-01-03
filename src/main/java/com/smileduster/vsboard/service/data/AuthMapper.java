@@ -12,11 +12,7 @@ import java.util.Set;
 @Mapper
 public interface AuthMapper {
 
-//    User selectUserByName(String name, int page, int skip);
-//    Role selectRoleById(int rid);
-//
     void insertUser(User user);
-//    void insertRole(Role role);
 
     Set<Role> selectRolesByUserId(int userId);
 

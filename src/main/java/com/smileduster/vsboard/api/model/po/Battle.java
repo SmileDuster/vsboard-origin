@@ -23,6 +23,8 @@ public class Battle {
 
     private int battleEventCount;
 
+    private int battleEventNumber;
+
     private Date battleCreateTime;
 
     private Date battleBeginTime;

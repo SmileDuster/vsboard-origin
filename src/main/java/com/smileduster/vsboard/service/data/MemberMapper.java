@@ -9,13 +9,4 @@ import java.util.List;
 @Mapper
 public interface MemberMapper {
 
-//    List<Member> selectMember(int uid, String name, int page, int skip);
-//    Member selectMemberById(int mid);
-//
-//    void updateMemberInfo(MemberDTO dto);
-//
-//    void deleteMemberById(int mid);
-//
-//    void insertMember(MemberDTO dto);
-
 }

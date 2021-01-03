@@ -25,22 +25,22 @@ public class MemberController {
         dto.setMemberName(form.getMemberName());
         dto.setMemberNote(form.getMemberNote());
         dto.setMemberInfo(form.getMemberInfo());
-        return Response.create(memberService.createMember(dto, userId()));
+        return memberService.createMember(dto, userId());
     }
 
     @PostMapping("/delete/{memberUUID}")
     public Response<?> deleteMember(@PathVariable String memberUUID) {
-        return Response.create(memberService.deleteMember(memberUUID, userId()));
+        return memberService.deleteMember(memberUUID, userId());
     }
 
     @GetMapping("/{memberUUID}")
     public Response<MemberDTO> getMemberDetail(@PathVariable String memberUUID) {
-        return Response.create(memberService.getMember(memberUUID, userId()));
+        return memberService.getMember(memberUUID, userId());
     }
 
     @GetMapping("/list")
     public Response<List<MemberDTO>> getMemberList(int page, int size) {
-        return Response.create(memberService.getMembers(page, size, userId()));
+        return memberService.getMembers(page, size, userId());
     }
 
     private int userId() {

@@ -15,6 +15,7 @@ public class BattleDTO {
     private String battleNote;
     private String battleInfo;
 
+    private String lastEventTitle;
     private int battleEventCount;
     private String battleCreateTime;
     private String battleBeginTime;

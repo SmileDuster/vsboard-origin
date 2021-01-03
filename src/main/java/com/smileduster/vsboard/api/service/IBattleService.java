@@ -21,7 +21,7 @@ public interface IBattleService {
 
     Response<BattleDTO> getBattle(String battleUUID, int userId);
 
-    Response<BattleMemberDTO> getBattleMember(String battleUUID, int battleMemberNumber, int userId);
+    Response<BattleMemberDTO> getBattleMember(String battleUUID, int groupMemberNumber, int userId);
 
     Response<BattleEventDTO> getEvent(String battleUUID, int battleEventNumber, int userId);
 

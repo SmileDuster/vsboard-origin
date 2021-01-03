@@ -29,6 +29,10 @@ public final class Response<T> {
         return new Response<>(ResponseCode.success, tips);
     }
 
+    public static <T> Response<T> create(ResponseCode code, T data) {
+        return new Response<>(code, data);
+    }
+
     public static <T> Response<T> create(T data){
         return new Response<>(ResponseCode.success, data);
     }
