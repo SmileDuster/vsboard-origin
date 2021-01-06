@@ -25,7 +25,8 @@ public class GroupDTO {
     private int groupMemberCount;
     private int groupMemberNumber;
 
-    private List<GroupMember> groupMembers;
+    private List<GroupMemberDTO> groupMembers;
+    private List<BattleDTO> battles;
 
     private String userNo;
     private String userName;

@@ -20,4 +20,5 @@ public interface AuthMapper {
 
     int checkUserNo(long userNo);
 
+    User selectUserByUserNo(long userNo);
 }

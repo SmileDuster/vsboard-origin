@@ -35,4 +35,8 @@ public interface BattleMapper {
     List<BattleMember> selectMembersByBattle(int battleId);
 
     BattleMember selectMemberByNumber(int battleId, int groupMemberNumber);
+
+    void insertBattleMember(BattleMember battleMember);
+
+    void deleteMembersByBattle(int battleId);
 }

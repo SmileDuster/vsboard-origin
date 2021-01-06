@@ -10,10 +10,12 @@ public enum ResponseCode {
     success("0", "Done."),
     loginFail("f1000", "Login failed."),
 
-    illegalGroup("f2001", "Illegal group provided."),
-    illegalBattle("f2002", "Illegal battle provided."),
+    unknownTarget("f2000", "Unknown target."),
 
-    unknownTarget("f3000", "Unknown target."),
+    illegalGroup("f2101", "Illegal group provided."),
+    illegalBattle("f2102", "Illegal battle provided."),
+    illegalMember("f2103", "Illegal member provided."),
+    dependentBattle("f2200", "Some battles are relying on the target that will be deleted."),
 
 
     unknownError("e0000", "Unknown error occurred."),

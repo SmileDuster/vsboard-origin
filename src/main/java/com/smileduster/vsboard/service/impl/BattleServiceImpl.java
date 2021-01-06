@@ -41,7 +41,7 @@ public class BattleServiceImpl implements IBattleService {
     public Response<?> createBattle(BattleDTO dto, int userId) {
         Group group = groupMapper.selectGroupByUUID(converter.parseUUID(dto.getGroupUUID()));
         if (group == null || group.getUserId() != userId) {
-            return Response.create(ResponseCode.illegalGroup, "创建比赛所需的团体不存在或无权访问");
+            return Response.create(ResponseCode.illegalGroup, dto.getGroupUUID());
         }
         groupMapper.incBattleCount(group.getGroupId());
 
@@ -70,6 +70,7 @@ public class BattleServiceImpl implements IBattleService {
         if (group != null) {
             groupMapper.decBattleCount(group.getGroupId());
         }
+        battleMapper.deleteMembersByBattle(battle.getBattleId());
         battleMapper.deleteEventsByBattle(battle.getBattleId());
         battleMapper.deleteBattleById(battle.getBattleId());
         return Response.create();
@@ -84,7 +85,7 @@ public class BattleServiceImpl implements IBattleService {
     public Response<?> createBattleEvent(BattleEventDTO dto, int userId) {
         Battle battle = battleMapper.selectBattleByUUID(converter.parseUUID(dto.getBattleUUID()));
         if (battle == null || battle.getUserId() != userId) {
-            return Response.create(ResponseCode.illegalBattle, "新对局所属的比赛不存在或无权访问");
+            return Response.create(ResponseCode.illegalBattle, dto.getBattleUUID());
         }
 
         int number = battle.getBattleEventNumber()+1;
@@ -102,7 +103,17 @@ public class BattleServiceImpl implements IBattleService {
 
         Map<Integer, Integer> map = converter.parseDataString(event.getBattleEventResult());
         for (Map.Entry<Integer, Integer> e : map.entrySet()) {
-            battleMapper.appendEventResult(e.getKey(), e.getValue(), battle.getBattleId());
+            BattleMember bm = battleMapper.selectMemberByNumber(battle.getBattleId(), e.getKey());
+            if (bm == null) {
+                bm = new BattleMember();
+                bm.setBattleId(battle.getBattleId());
+                bm.setGroupMemberNumber(e.getKey());
+                bm.setBattleMemberReward(0);
+                bm.setBattleMemberScore(e.getValue());
+                battleMapper.insertBattleMember(bm);
+            } else {
+                battleMapper.appendEventResult(e.getKey(), e.getValue(), battle.getBattleId());
+            }
         }
         return Response.create();
     }
@@ -166,7 +177,12 @@ public class BattleServiceImpl implements IBattleService {
         dto.setBattleEventList(eventDTOS);
 
         List<BattleMember> battleMembers = battleMapper.selectMembersByBattle(battle.getBattleId());
-        List<GroupMember> groupMembers = groupMapper.selectMembersByGroup(group.getGroupId());
+        List<Integer> memberNumbers = new LinkedList<>();
+        for (BattleMember bm : battleMembers) {
+            memberNumbers.add(bm.getGroupMemberNumber());
+        }
+        List<GroupMember> groupMembers = groupMapper.selectMembersIn(group.getGroupId(), memberNumbers);
+
         List<BattleMemberDTO> memberDTOS = new LinkedList<>();
         for (int i = 0; i < battleMembers.size(); i++) {
             BattleMember bm = battleMembers.get(i);

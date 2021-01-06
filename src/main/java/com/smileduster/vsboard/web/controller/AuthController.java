@@ -3,6 +3,7 @@ package com.smileduster.vsboard.web.controller;
 import com.smileduster.vsboard.api.model.common.Response;
 import com.smileduster.vsboard.api.model.common.ResponseCode;
 import com.smileduster.vsboard.api.model.dto.UserDTO;
+import com.smileduster.vsboard.api.tools.Generator;
 import com.smileduster.vsboard.web.form.LoginForm;
 import com.smileduster.vsboard.web.form.RegisterForm;
 import com.smileduster.vsboard.web.form.UpdatePwdForm;
@@ -24,9 +25,11 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final IAuthService authService;
+    private final Generator generator;
 
-    public AuthController(IAuthService authService) {
+    public AuthController(IAuthService authService, Generator generator) {
         this.authService = authService;
+        this.generator = generator;
     }
 
     @PostMapping("/login")
@@ -47,7 +50,7 @@ public class AuthController {
         UserDTO dto = new UserDTO();
         dto.setUserName(form.getUserName());
         dto.setUserEmail(form.getUserEmail());
-        ByteSource salt = DefaultGenerator.getSalt();
+        ByteSource salt = generator.getSalt();
         String hashedPwd = new Sha256Hash(form.getUserPwd(), salt, 1024)
                 .toBase64();
         dto.setUserPwd(hashedPwd);

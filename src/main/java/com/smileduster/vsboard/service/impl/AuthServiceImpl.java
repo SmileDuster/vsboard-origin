@@ -48,6 +48,11 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public Response<UserDTO> getUser(String userNo) {
+//        User user = authMapper.selectUserByUserNo(converter.parseUserNo(userNo));
+//
+//        UserDTO dto = new UserDTO();
+//        dto.setUserName(user.getUserName());
+//        dto.set
         return Response.todo();
     }
 
