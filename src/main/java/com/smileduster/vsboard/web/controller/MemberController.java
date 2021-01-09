@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/member")
+@CrossOrigin("*")
 public class MemberController {
 
     private final IMemberService memberService;
@@ -20,7 +21,7 @@ public class MemberController {
     }
 
     @PostMapping("/create")
-    public Response<?> createMember(CreateMemberForm form) {
+    public Response<?> createMember(@RequestBody CreateMemberForm form) {
         MemberDTO dto = new MemberDTO();
         dto.setMemberName(form.getMemberName());
         dto.setMemberNote(form.getMemberNote());
@@ -44,7 +45,8 @@ public class MemberController {
     }
 
     private int userId() {
-        return (int) SecurityUtils.getSubject().getSession().getAttribute("userId");
+        return (int) SecurityUtils.getSubject().getPrincipal();
     }
+
 
 }

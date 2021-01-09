@@ -1,9 +1,11 @@
 package com.smileduster.vsboard.api.tools;
 
 import com.fasterxml.uuid.impl.UUIDUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
+@Slf4j
 public final class DefaultConverter implements Converter {
 
     @Override

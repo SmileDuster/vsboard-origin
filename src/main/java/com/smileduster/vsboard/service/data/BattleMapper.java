@@ -11,32 +11,22 @@ import java.util.List;
 public interface BattleMapper {
 
     void insertBattle(Battle battle);
-
-    Battle selectBattleByUUID(byte[] battleUUID);
-
-    void deleteBattleById(int battleId);
-
-    void insertEvent(BattleEvent event);
-
-    void incEventCount(int battleId);
-
-    void incEventNumber(int battleId);
-
-    void deleteEventsByBattle(int battleId);
-
-    void appendEventResult(int number, int result, int battleId);
-
-    List<Battle> selectBattlesByUser(int page, int skip, int userId);
-
-    BattleEvent selectEventByNumber(int battleId, int battleEventNumber);
-
-    List<BattleEvent> selectEventsByBattle(int battleId);
-
-    List<BattleMember> selectMembersByBattle(int battleId);
-
-    BattleMember selectMemberByNumber(int battleId, int groupMemberNumber);
-
     void insertBattleMember(BattleMember battleMember);
 
+    void insertEvent(BattleEvent event);
+    void incEventCount(int battleId);
+    void incEventNumber(int battleId);
+    void appendEventResult(int number, int result, int battleId);
+
+    void deleteBattleById(int battleId);
     void deleteMembersByBattle(int battleId);
+    void deleteEventsByBattle(int battleId);
+
+    Battle selectBattleByUUID(byte[] battleUUID);
+    BattleEvent selectEventByNumber(int battleId, int battleEventNumber);
+    BattleMember selectMemberByNumber(int battleId, int groupMemberNumber);
+    List<Battle> selectBattlesByUser(int page, int skip, int userId);
+    List<BattleEvent> selectEventsByBattle(int battleId);
+    List<BattleMember> selectMembersByBattle(int battleId);
+
 }

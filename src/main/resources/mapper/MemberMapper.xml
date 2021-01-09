@@ -4,13 +4,32 @@
 
 <mapper namespace="com.smileduster.vsboard.service.data.MemberMapper">
 
-    <!--insert 操作-->
-    <!--update 操作-->
-    <!--delete 操作-->
-    <!--select 操作-->
+    <insert id="insertMember" useGeneratedKeys="true" keyProperty="memberId" parameterType="Member">
+        insert into vs_member (member_uuid, member_name, member_note, member_info, user_id)
+        values (#{memberUUID}, #{memberName}, #{memberNote}, #{memberInfo}, #{userId});
+    </insert>
+
+    <delete id="deleteMemberById">
+        delete from vs_member
+        where member_id = #{memberId}
+    </delete>
+
+    <select id="selectMemberByUUID" resultType="Member">
+        select *
+        from vs_member
+        where member_uuid = #{memberUUID};
+    </select>
+
+    <select id="selectMemberById" resultType="Member">
+        select *
+        from vs_member
+        where member_id = #{memberId};
+    </select>
+
+    <select id="selectMembersByUser" resultType="Member">
+        select *
+        from vs_member
+        where user_id = #{userId};
+    </select>
 
 </mapper>
-
-<!--
-
--->

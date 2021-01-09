@@ -4,30 +4,36 @@
 
 <mapper namespace="com.smileduster.vsboard.service.data.AuthMapper">
 
+    <!--insert-->
     <insert id="insertUser"
-            parameterType="com.smileduster.vsboard.api.model.po.User"
+            parameterType="User"
             useGeneratedKeys="true">
-        insert into vs_user (user_id, user_name, user_no, user_pwd, user_pwd_salt, user_email, user_create_time,
+        insert into vs_user (user_name, user_no, user_pwd, user_pwd_salt, user_email, user_create_time,
                              user_login_time, user_last_ip)
-        values (#{userId}, #{userName}, #{userNo}, #{userPwd},
+        values (#{userName}, #{userNo}, #{userPwd},
                 #{userPwdSalt}, #{userEmail}, #{userCreateTime}, #{userLoginTime}, #{userLastIP});
     </insert>
 
-    <select id="selectUserById" resultType="com.smileduster.vsboard.api.model.po.User">
-        select user_id          userId,
-               user_name        userName,
-               user_pwd         userPwd,
-               user_pwd_salt    userPwdSalt,
-               user_no          userNo,
-               user_email       userEmail,
-               user_create_time userCreateTime,
-               user_login_time  userLoginTime,
-               user_last_ip     userLastIP
+    <!--select-->
+    <select id="selectUserById" resultType="User">
+        select *
         from vs_user
         where user_id = #{userId};
     </select>
 
-    <select id="selectRolesByUserId" resultType="com.smileduster.vsboard.api.model.po.Role">
+    <select id="selectUserByUserNo" resultType="User">
+        select *
+        from vs_user
+        where user_no = #{userNo}
+    </select>
+
+    <select id="selectUserByUserEmail" resultType="User">
+        select *
+        from vs_user
+        where user_email = #{userEmail}
+    </select>
+
+    <select id="selectRolesByUserId" resultType="Role">
         select vr.role_id   roleId,
                role_name    roleName
         from vs_role vr
@@ -39,6 +45,12 @@
         select count(*)
         from vs_user vu
         where vu.user_no = #{userNo};
+    </select>
+
+    <select id="checkEmail" resultType="int">
+        select count(*)
+        from vs_user vu
+        where vu.user_email = #{userEmail};
     </select>
 
 </mapper>

@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/battle")
+@CrossOrigin("*")
 public class BattleController {
 
     private final IBattleService battleService;
@@ -25,12 +26,14 @@ public class BattleController {
     }
 
     @PostMapping("/create")
-    public Response<?> createBattle(CreateBattleForm form) {
+    public Response<?> createBattle(@RequestBody CreateBattleForm form) {
         BattleDTO dto = new BattleDTO();
         dto.setBattleName(form.getBattleName());
         dto.setBattleNote(form.getBattleNote());
         dto.setBattleInfo(form.getBattleInfo());
         dto.setGroupUUID(form.getGroupUUID());
+        dto.setBattleBeginTime(form.getBattleBeginTime());
+        dto.setBattleEndTime(form.getBattleEndTime());
         return battleService.createBattle(dto, userId());
     }
 
@@ -72,6 +75,7 @@ public class BattleController {
         dto.setBattleEventScore(form.getBattleEventScore());
         dto.setBattleEventStartTime(form.getBattleEventStartTime());
         dto.setBattleEventEndTime(form.getBattleEventEndTime());
+        dto.setBattleUUID(form.getBattleUUID());
         return battleService.createBattleEvent(dto, userId());
     }
 
@@ -85,7 +89,7 @@ public class BattleController {
     }
 
     private int userId() {
-        return (int) SecurityUtils.getSubject().getSession().getAttribute("userId");
+        return (int) SecurityUtils.getSubject().getPrincipal();
     }
 
 }

@@ -9,7 +9,7 @@ public class CreateBattleForm {
     private String battleNote;
     private String battleInfo;
 
-    private String battleStartTime;
+    private String battleBeginTime;
     private String battleEndTime;
 
     private String groupUUID;

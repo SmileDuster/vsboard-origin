@@ -13,4 +13,5 @@ public class CreateBattleEventForm {
     private String battleEventStartTime;
     private String battleEventEndTime;
 
+    private String battleUUID;
 }

@@ -4,13 +4,118 @@
 
 <mapper namespace="com.smileduster.vsboard.service.data.GroupMapper">
 
-    <!--insert 操作-->
-    <!--update 操作-->
-    <!--delete 操作-->
-    <!--select 操作-->
+    <!--insert-->
+    <insert id="insertGroup" useGeneratedKeys="true" parameterType="Group" keyProperty="groupId">
+        insert into vs_group (group_uuid, group_name, group_note, group_info, group_battle_count, group_member_count,
+                              group_member_number, user_id)
+        values (#{groupUUID}, #{groupName}, #{groupNote}, #{groupInfo}, #{groupBattleCount}, #{groupMemberCount},
+                #{groupMemberNumber}, #{userId});
+    </insert>
+    <insert id="insertGroupMember" parameterType="GroupMember">
+        insert into vs_group_member (group_id, group_member_number, member_id, group_member_name, group_member_point)
+        values (#{groupId}, #{groupMemberNumber}, #{memberId}, #{groupMemberName}, #{groupMemberPoint});
+    </insert>
+
+    <!--update-->
+    <update id="incMemberCount">
+        update vs_group
+        set group_member_count = group_member_count + 1
+        where group_id = #{groupId};
+    </update>
+    <update id="incMemberNumber">
+        update vs_group
+        set group_member_number = group_member_number + 1
+        where group_id = #{groupId};
+    </update>
+    <update id="incBattleCount">
+        update vs_group
+        set group_battle_count = group_battle_count + 1
+        where group_id = #{groupId};
+    </update>
+    <update id="decBattleCount">
+        update vs_group
+        set group_battle_count = group_battle_count - 1
+        where group_id = #{groupId};
+    </update>
+
+    <!--delete-->
+    <delete id="deleteGroupById">
+        delete from vs_group
+        where group_id = #{groupId}
+    </delete>
+    <delete id="deleteMembersByGroup">
+        delete from vs_group_member
+        where group_id = #{groupId}
+    </delete>
+
+    <!--select-->
+    <select id="selectGroupByUUID" resultType="Group">
+        select *
+        from vs_group
+        where group_uuid = #{groupUUID};
+    </select>
+    <select id="selectGroupById" resultType="Group">
+        select *
+        from vs_group vg
+        where vg.group_id = #{groupId};
+    </select>
+    <select id="selectMemberByNumber" resultType="GroupMember">
+        select *
+        from vs_group_member vgm
+        where vgm.group_id = #{groupId}
+        and vgm.group_member_number = #{groupMemberNumber};
+    </select>
+    <select id="selectMembersByGroup" resultType="GroupMember">
+        select *
+        from vs_group_member vgm
+        where vgm.group_id = #{groupId};
+    </select>
+    <select id="selectMembersByMember" resultType="GroupMember">
+        select *
+        from vs_group_member vgm
+        where vgm.member_id = #{memberId};
+    </select>
+    <select id="selectMembersIn" resultType="GroupMember">
+        select *
+        from vs_group_member vgm
+        where vgm.group_id = #{groupId}
+        and vgm.group_member_number in
+        <foreach collection="memberNumbers" item="numbers" index="index"
+                 open="(" separator="," close=")">
+            #{numbers}
+        </foreach>
+    </select>
+    <select id="selectGroupsByUser" resultType="Group">
+        select *
+        from vs_group vg
+        where vg.user_id = #{userId};
+    </select>
+    <select id="selectBattlesByGroup" resultType="Battle">
+        select *
+        from vs_battle vb
+        where vb.group_id = #{groupId};
+    </select>
 
 </mapper>
 
 <!--
+    void insertGroup(Group group);
+    void insertGroupMember(GroupMember groupMember);
 
+    void incMemberCount(int groupId);
+    void incMemberNumber(int groupId);
+    void incBattleCount(int groupId);
+    void decBattleCount(int groupId);
+
+    void deleteGroupById(int groupId);
+    void deleteMembersByGroup(int groupId);
+
+    Group selectGroupByUUID(byte[] groupUUID);
+    Group selectGroupById(int groupId);
+    GroupMember selectMemberByNumber(int groupId, int groupMemberNumber);
+    List<GroupMember> selectMembersByGroup(int groupId);
+    List<GroupMember> selectMembersByMember(int memberId);
+    List<GroupMember> selectMembersIn(int groupId, List<Integer> memberNumbers);
+    List<Group> selectGroupsByUser(int page, int skip, int userId);
+    List<Battle> selectBattlesByGroup(int groupId);
 -->

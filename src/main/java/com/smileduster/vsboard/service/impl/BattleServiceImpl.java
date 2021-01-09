@@ -54,6 +54,7 @@ public class BattleServiceImpl implements IBattleService {
         battle.setBattleBeginTime(converter.parseDate(dto.getBattleBeginTime()));
         battle.setBattleEndTime(converter.parseDate(dto.getBattleEndTime()));
         battle.setBattleEventCount(0);
+        battle.setBattleEventNumber(0);
         battle.setGroupId(group.getGroupId());
         battle.setUserId(userId);
         battleMapper.insertBattle(battle);
@@ -90,6 +91,7 @@ public class BattleServiceImpl implements IBattleService {
 
         int number = battle.getBattleEventNumber()+1;
         BattleEvent event = new BattleEvent();
+        event.setBattleId(battle.getBattleId());
         event.setBattleEventTitle(dto.getBattleEventTitle());
         event.setBattleEventNote(dto.getBattleEventNote());
         event.setBattleEventNumber(number);
@@ -133,7 +135,9 @@ public class BattleServiceImpl implements IBattleService {
             dto.setBattleEventCount(b.getBattleEventCount());
 
             BattleEvent event = battleMapper.selectEventByNumber(b.getBattleId(), b.getBattleEventNumber());
-            dto.setLastEventTitle(event.getBattleEventTitle());
+            if (event != null) {
+                dto.setLastEventTitle(event.getBattleEventTitle());
+            }
 
             list.add(dto);
         }
@@ -177,16 +181,10 @@ public class BattleServiceImpl implements IBattleService {
         dto.setBattleEventList(eventDTOS);
 
         List<BattleMember> battleMembers = battleMapper.selectMembersByBattle(battle.getBattleId());
-        List<Integer> memberNumbers = new LinkedList<>();
-        for (BattleMember bm : battleMembers) {
-            memberNumbers.add(bm.getGroupMemberNumber());
-        }
-        List<GroupMember> groupMembers = groupMapper.selectMembersIn(group.getGroupId(), memberNumbers);
 
         List<BattleMemberDTO> memberDTOS = new LinkedList<>();
-        for (int i = 0; i < battleMembers.size(); i++) {
-            BattleMember bm = battleMembers.get(i);
-            GroupMember gm = groupMembers.get(i);
+        for (BattleMember bm : battleMembers) {
+            GroupMember gm = groupMapper.selectMemberByNumber(group.getGroupId(), bm.getGroupMemberNumber());
 
             BattleMemberDTO battleMemberDTO = new BattleMemberDTO();
             battleMemberDTO.setGroupMemberNumber(bm.getGroupMemberNumber());

@@ -1,12 +1,15 @@
 package com.smileduster.vsboard.service.impl;
 
+import com.smileduster.vsboard.api.exception.VsboardServiceException;
 import com.smileduster.vsboard.api.model.common.Response;
+import com.smileduster.vsboard.api.model.common.ResponseCode;
 import com.smileduster.vsboard.api.model.dto.UserDTO;
 import com.smileduster.vsboard.api.model.po.User;
 import com.smileduster.vsboard.api.service.IAuthService;
 import com.smileduster.vsboard.api.tools.Converter;
 import com.smileduster.vsboard.api.tools.Generator;
 import com.smileduster.vsboard.service.data.AuthMapper;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +33,10 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public Response<?> createUser(UserDTO dto) {
+        if (authMapper.checkEmail(dto.getUserEmail()) > 0) {
+            return Response.create(ResponseCode.dupEmail, dto.getUserEmail());
+        }
+
         User user = new User();
         user.setUserName(dto.getUserName());
         user.setUserPwd(dto.getUserPwd());

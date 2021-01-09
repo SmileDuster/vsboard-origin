@@ -10,35 +10,24 @@ import java.util.List;
 @Mapper
 public interface GroupMapper {
 
-    Group selectGroupByUUID(byte[] groupUUID);
-
-    void incBattleCount(int groupId);
-
-    Group selectGroupById(int groupId);
-
-    void decBattleCount(int groupId);
-
-    List<GroupMember> selectMembersByGroup(int groupId);
-
-    GroupMember selectMemberByNumber(int groupId, int groupMemberNumber);
-
-    List<GroupMember> selectMembersByMember(int memberId);
-
     void insertGroup(Group group);
-
-    void deleteGroupById(int groupId);
-
     void insertGroupMember(GroupMember groupMember);
 
     void incMemberCount(int groupId);
-
     void incMemberNumber(int groupId);
+    void incBattleCount(int groupId);
+    void decBattleCount(int groupId);
 
-    List<GroupMember> selectMembersIn(int groupId, List<Integer> memberNumbers);
-
+    void deleteGroupById(int groupId);
     void deleteMembersByGroup(int groupId);
 
+    Group selectGroupByUUID(byte[] groupUUID);
+    Group selectGroupById(int groupId);
+    GroupMember selectMemberByNumber(int groupId, int groupMemberNumber);
+    List<GroupMember> selectMembersByGroup(int groupId);
+    List<GroupMember> selectMembersByMember(int memberId);
+    List<GroupMember> selectMembersIn(int groupId, List<Integer> memberNumbers);
     List<Group> selectGroupsByUser(int page, int skip, int userId);
-
     List<Battle> selectBattlesByGroup(int groupId);
+
 }

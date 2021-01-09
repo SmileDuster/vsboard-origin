@@ -3,55 +3,111 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.smileduster.vsboard.service.data.BattleMapper">
-<!--    &lt;!&ndash;insert 操作&ndash;&gt;-->
-<!--    <insert id="insertBattle">-->
-<!--        insert into vs_battle (battle_uuid, battle_name, battle_note, battle_status, battle_create_time, user_id,-->
-<!--                               group_id)-->
-<!--        values (#{battleUUID}, #{battleName}, #{battleNote}, #{battleStatus}, current_timestamp, #{userId}, #{groupId});-->
-<!--    </insert>-->
+    <!--insert-->
+    <insert id="insertBattle" parameterType="Battle">
+        insert into vs_battle (battle_uuid, battle_name, battle_note, battle_info, battle_event_count,
+                               battle_event_number, battle_create_time, battle_begin_time, battle_end_time, group_id,
+                               user_id)
+        values (#{battleUUID}, #{battleName}, #{battleNote}, #{battleInfo}, #{battleEventCount}, #{battleEventNumber},
+                #{battleCreateTime}, #{battleBeginTime}, #{battleEndTime}, #{groupId}, #{userId});
+    </insert>
+    <insert id="insertBattleMember" parameterType="BattleMember">
+        insert into vs_battle_member (battle_id, group_member_number, battle_member_score, battle_member_reward)
+        values (#{battleId}, #{groupMemberNumber}, #{battleMemberScore}, #{battleMemberReward});
+    </insert>
+    <insert id="insertEvent" parameterType="BattleEvent">
+        insert into vs_battle_event (battle_id, battle_event_number, battle_event_title, battle_event_note,
+                                     battle_event_result, battle_event_score, battle_event_start_time,
+                                     battle_event_end_time)
+        values (#{battleId}, #{battleEventNumber}, #{battleEventTitle}, #{battleEventNote}, #{battleEventResult}, 
+                #{battleEventScore}, #{battleEventStartTime}, #{battleEventEndTime});
+    </insert>
 
-<!--    &lt;!&ndash;delete 操作&ndash;&gt;-->
-<!--    <delete id="deleteBattleById">-->
-<!--        delete from vs_battle-->
-<!--        where battle_id = #{battleId};-->
-<!--    </delete>-->
+    <!--update-->
+    <update id="incEventCount">
+        update vs_battle
+        set battle_event_count = battle_event_count + 1
+        where battle_id = #{battleId};
+    </update>
+    <update id="incEventNumber">
+        update vs_battle
+        set battle_event_number = battle_event_number + 1
+        where battle_id = #{battleId};
+    </update>
+    <update id="appendEventResult">
+        update vs_battle_member
+        set battle_member_score = battle_member_score + #{result}
+        where battle_id = #{battleId}
+        and group_member_number = #{number};
+    </update>
 
-<!--    &lt;!&ndash;update 操作&ndash;&gt;-->
-<!--    <update id="updateBattleInfo">-->
-<!--        update vs_battle-->
-<!--        set battle_name = #{battleName},-->
-<!--            battle_note = #{battleNote},-->
-<!--            battle_status = #{battleStatus}-->
-<!--        where battle_id = #{battleId};-->
-<!--    </update>-->
+    <!--delete-->
+    <delete id="deleteBattleById">
+        delete from vs_battle
+        where battle_id = #{battleId};
+    </delete>
+    <delete id="deleteMembersByBattle">
+        delete from vs_battle_member
+        where battle_id = #{battleId};
+    </delete>
+    <delete id="deleteEventsByBattle">
+        delete from vs_battle_event
+        where battle_id = #{battleId};
+    </delete>
 
-<!--    &lt;!&ndash;select 操作&ndash;&gt;-->
-<!--    <select id="selectBattle">-->
-<!--        select battle_id            battleId,-->
-<!--               battle_uuid          battleUUID,-->
-<!--               battle_name          battleName,-->
-<!--               battle_status        battleStatus,-->
-<!--               battle_create_time   battleCreateTime,-->
-<!--               user_id              userId,-->
-<!--               group_id             groupId-->
-<!--        from vs_battle-->
-<!--        limit #{skip}, #{size};-->
-<!--    </select>-->
-<!--    <select id="selectBattleById">-->
-<!--        select battle_id            battleId,-->
-<!--               battle_uuid          battleUUID,-->
-<!--               battle_name          battleName,-->
-<!--               battle_note          battleNote,-->
-<!--               battle_status        battleStatus,-->
-<!--               battle_create_time   battleCreateTime,-->
-<!--               user_id              userId,-->
-<!--               group_id             groupId-->
-<!--        from vs_battle-->
-<!--        where battle_id = #{battleId};-->
-<!--    </select>-->
+    <!--select-->
+    <select id="selectBattleByUUID" resultType="Battle">
+        select *
+        from vs_battle vb
+        where vb.battle_uuid = #{battleUUID};
+    </select>
+    <select id="selectEventByNumber" resultType="BattleEvent">
+        select *
+        from vs_battle_event vbe
+        where vbe.battle_id = #{battleId}
+        and vbe.battle_event_number = #{battleEventNumber};
+    </select>
+    <select id="selectMemberByNumber" resultType="BattleMember">
+        select *
+        from vs_battle_member vbm
+        where vbm.battle_id = #{battleId}
+        and vbm.group_member_number = #{groupMemberNumber};
+    </select>
+    <select id="selectBattlesByUser" resultType="Battle">
+        select *
+        from vs_battle vb
+        where vb.user_id = #{userId};
+    </select>
+    <select id="selectEventsByBattle" resultType="BattleEvent">
+        select *
+        from vs_battle_event vbe
+        where vbe.battle_id = #{battleId};
+    </select>
+    <select id="selectMembersByBattle" resultType="BattleMember">
+        select *
+        from vs_battle_member vbm
+        where vbm.battle_id = #{battleId};
+    </select>
 
 </mapper>
 
 <!--
+    void insertBattle(Battle battle);
+    void insertBattleMember(BattleMember battleMember);
+    void insertEvent(BattleEvent event);
+    
+    void incEventCount(int battleId);
+    void incEventNumber(int battleId);
+    void appendEventResult(int number, int result, int battleId);
 
+    void deleteBattleById(int battleId);
+    void deleteMembersByBattle(int battleId);
+    void deleteEventsByBattle(int battleId);
+
+    Battle selectBattleByUUID(byte[] battleUUID);
+    BattleEvent selectEventByNumber(int battleId, int battleEventNumber);
+    BattleMember selectMemberByNumber(int battleId, int groupMemberNumber);
+    List<Battle> selectBattlesByUser(int page, int skip, int userId);
+    List<BattleEvent> selectEventsByBattle(int battleId);
+    List<BattleMember> selectMembersByBattle(int battleId);
 -->

@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/group")
+@CrossOrigin("*")
 public class GroupController {
 
     private final IGroupService groupService;
@@ -35,12 +36,12 @@ public class GroupController {
         return groupService.deleteGroup(groupUUID, userId());
     }
 
-    @PostMapping("/{groupUUID}")
+    @GetMapping("/{groupUUID}")
     public Response<GroupDTO> getGroupDetail(@PathVariable String groupUUID) {
         return groupService.getGroup(groupUUID, userId());
     }
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     public Response<List<GroupDTO>> getOwnedGroupList(int page, int size) {
         return groupService.getGroups(page, size, userId());
     }
@@ -64,7 +65,7 @@ public class GroupController {
     }
 
     private int userId() {
-        return (int) SecurityUtils.getSubject().getSession().getAttribute("userId");
+        return (int) SecurityUtils.getSubject().getPrincipal();
     }
 
 }

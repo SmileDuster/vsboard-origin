@@ -9,6 +9,7 @@ public enum ResponseCode {
 
     success("0", "Done."),
     loginFail("f1000", "Login failed."),
+    dupEmail("f1100", "Provided email is registered."),
 
     unknownTarget("f2000", "Unknown target."),
 

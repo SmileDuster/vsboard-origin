@@ -3,7 +3,6 @@ package com.smileduster.vsboard.web.shiro;
 import com.smileduster.vsboard.api.model.po.Role;
 import com.smileduster.vsboard.api.model.po.User;
 import com.smileduster.vsboard.service.data.AuthMapper;
-import com.smileduster.vsboard.service.data.IdMapper;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -23,9 +22,6 @@ public class UserPwdRealm extends AuthorizingRealm {
     @Autowired
     private AuthMapper authMapper;
 
-    @Autowired
-    private IdMapper idMapper;
-
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         int userId = (int) principalCollection.getPrimaryPrincipal();
@@ -42,12 +38,10 @@ public class UserPwdRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(
             AuthenticationToken authenticationToken
     ) throws AuthenticationException {
-        String raw = (String) authenticationToken.getPrincipal();
-        long userNo = Long.parseLong(raw);
-        int userId = idMapper.getUserId(userNo);
-        User user = authMapper.selectUserById(userId);
+        String email = (String) authenticationToken.getPrincipal();
+        User user = authMapper.selectUserByUserEmail(email);
         AuthenticationInfo info = new SimpleAuthenticationInfo(
-                userId,
+                user.getUserId(),
                 user.getUserPwd(),
                 ByteSource.Util.bytes(user.getUserPwdSalt()),
                 getName()

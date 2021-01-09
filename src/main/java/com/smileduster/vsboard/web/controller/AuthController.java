@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin("*")
 public class AuthController {
 
     private final IAuthService authService;
@@ -36,12 +37,10 @@ public class AuthController {
     public Response<?> login(@RequestBody LoginForm form){
         Subject subject = SecurityUtils.getSubject();
         try {
-            subject.login(new UsernamePasswordToken(form.getUserNo(), form.getPwd()));
+            subject.login(new UsernamePasswordToken(form.getUserEmail(), form.getPwd()));
         } catch (AuthenticationException e) {
             return Response.create(ResponseCode.loginFail);
         }
-        Session session = subject.getSession(true);
-        session.setAttribute("userNo", form.getUserNo());
         return Response.create();
     }
 
